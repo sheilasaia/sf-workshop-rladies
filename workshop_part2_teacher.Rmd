@@ -78,7 +78,8 @@ Try to do the following:
 ```{python}
 # load in nc_bounds dataset
 # add your code here
-nc_bounds <- st_read(here::here("data", "se_state_bounds", "nc_bounds.shp"))
+nc_bounds <- st_read(here::here("data", "se_state_bounds", "nc_bounds.shp")) 
+  %>% st_set_crs(5070)
 st_crs(nc_bounds)
 
 # plot nc bounds and gages data on the map
@@ -128,7 +129,8 @@ Try to do the following:
 ```{python}
 # load in county income data
 # add your code here
-nc_county_income <- st_read(here::here("data", "nc_county_income", "nc_county_income.shp"))
+nc_county_income <- st_read(here::here("data", "nc_county_income", "nc_county_income.shp"))  
+  %>% st_set_crs(5070)
 st_crs(nc_county_income)
 
 # ok CRS = 5070 so it's compatible with all of our other data and we don't need to transform. yay!
