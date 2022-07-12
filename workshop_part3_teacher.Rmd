@@ -1,0 +1,66 @@
+---
+title: An R Markdown document converted from "/Users/ssaia/Documents/github/sf-workshop-rladies/workshop_part3_teacher.ipynb"
+output: html_document
+---
+
+```{python}
+# Spatial Data Basics with sf in R (Part 3)
+
+This jupyter notebook contains the code and documentation for part 3 of the "Spatial Data Basics with sf in R" workshop with R-Ladies RTP.
+
+All of the code that was used to create this tutorial can be found on GitHub here: https://github.com/sheilasaia/sf-workshop-rladies. Please contact Sheila Saia via Meetup or in the Zoom chat during the workshop, if you have any questions.
+
+Special thanks to Dallas Hoffman for all their feedback and help with running this multi-part workshop!
+
+## Learning Outcomes
+
+By the end of part 3 of the workshop attendees will be able to:
+
+1. **apply** sf and tidyverse operations to wrangle and map real-world spatial data
+
+Meetup page for Part 3: https://www.meetup.com/rladies-rtp/events/286866014/
+
+To start, load the `tidyverse`, `sf`, and `here` R packages.
+```
+
+```{python}
+# load the libraries
+# add your code here
+library(tidyverse)
+library(here)
+library(sf)
+```
+
+## Real-World Spatial Data
+
+There were several spatial datasets that we've worked with so far (that are located in the data director of this project).
+
+Some data we've already worked with:
+
+- Southeastern state bounds
+- North Carolina bounds
+- North Carolina median income
+- North Carolina USGS streamflow gauges
+
+Some other data that might be of interest
+- North Carolina non-reference watersheds (spatial, in data directory) - NOTE: non-reference watersheds have some urban/residential/commercial development versus reference watersheds which are largely undeveloped
+- North Carolina watershed characteristics (tabular, in data directory)
+- North Carolina USGS streamflow gauges time series data (tabular, not in data directory but can use `dataRetrieval` package in R and gage id's from existing data)
+- Other North Carolina Census data (tabular and spatial, not in data directory but can use `tidycensus` package in R *with a Census API key*)
+
+## Spatial Operations Practice Ideas
+
+Try out some of the other spatial operations. Here are some ideas:
+
+1. What is the area of each county?
+2. What is the centroid of each non-reference watershed. Map the watersheds and these centroids together on one image.
+3. Buffer each gage by 5 km and map the result.
+4. Create a map of the number of gages per county (and plot the number of gauges vs median county income).
+5. Find the minimum area that contains all the gages. What fraction of the total area of NC is this?
+6. Find the centroid of each county and map the result along with the county bounds.
+7. What other things would you like to try?
+
+## Other Helpful sf Commands
+
+If you have a spatial dataset and you want to just keep the attribute data, that is, the data that is not spatially oriented, you can use `st_drop_geometry()` and you will just be left with the dataframe. If you only want to keep the geometry and want to drop all the attribute data you can use `st_geometry()`.
+
