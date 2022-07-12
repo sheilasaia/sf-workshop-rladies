@@ -22,7 +22,7 @@ Meetup page for Part 2: https://www.meetup.com/rladies-rtp/events/286377977/
 
 To prepare for this workshop load the `tidyverse`, `sf`, and `here` R packages.
 
-```{python}
+```{r}
 # load the libraries
 # add your code here
 library(tidyverse)
@@ -36,26 +36,26 @@ Before we take a look at some spatial operations, let's take a tabular (i.e., .c
 
 Check out the [U.S. Geological Survey GAGESII dataset](https://water.usgs.gov/GIS/metadata/usgswrd/XML/gagesII_Sept2011.xml) of streamgages located in North Carolina that's available in the data > streamgages > nc_gages.csv file.
 
-```{python}
+```{r}
 # first load in the data
 nc_gages <- read_csv(here::here("data", "streamgages", "nc_gages.csv"), col_names = TRUE)
 ```
 
-```{python}
+```{r}
 # look at the first few lines
 head(nc_gages)
 
 # the LAT_GAGE and LNG_GAGE columns are the latitude and longitude columns, respectively
 ```
 
-```{python}
+```{r}
 # check the class
 class(nc_gages)
 ```
 
 Now we can take this tabular data and convert it to a spatial dataset using the `st_as_sf()` function where we define the `coords` argument using the latitude and longitude column names. This will tell R that we want those columns to represent those values in space.
 
-```{python}
+```{r}
 # convert tabular to spatial data
 nc_gages_spatial <- st_as_sf(nc_gages, coords = c("LNG_GAGE", "LAT_GAGE"), crs = 4326, dim = "XY") %>%
   st_transform(crs = 5070)
@@ -63,7 +63,7 @@ nc_gages_spatial <- st_as_sf(nc_gages, coords = c("LNG_GAGE", "LAT_GAGE"), crs =
 # crs = 4326 because this is the standard EPSG code for the WGS 1984 geographic coordinate system that represents simple lat and long values, then transform to crs = 5070 to work with our other data
 ```
 
-```{python}
+```{r}
 # check the class
 class(nc_gages_spatial)
 ```
@@ -75,7 +75,7 @@ Try to do the following:
 1. Load in the nc_bounds dataset again from part 1.
 2. Plot the nc_bounds dataset on the bottom and the nc_gages_spatial dataset on the top using `geom_sf()`.
 
-```{python}
+```{r}
 # load in nc_bounds dataset
 # add your code here
 
@@ -123,24 +123,24 @@ Try to do the following:
 3. Use `st_intersection()` to join the two datasets together and assign it to `nc_gages_income_join`.
 4. Map these data using `nc_bounds` and `nc_gages_income_join` and color the points by median household income. Do you see any interesting patterns?
 
-```{python}
+```{r}
 # load in county income data
 # add your code here
 
 # ok CRS = 5070 so it's compatible with all of our other data and we don't need to transform. yay!
 ```
 
-```{python}
+```{r}
 # look at the columns
 # add your code here
 ```
 
-```{python}
+```{r}
 # do a spatial join with the gages and county income data
 # add your code here
 ```
 
-```{python}
+```{r}
 # map the data
 # fill in the ... below with the correct datasets
 ggplot() +
@@ -168,7 +168,7 @@ If you have a spatial dataset and you want to just keep the attribute data, that
 
 A basemap provides spatial context for your map by adding a raster data image behind it. This image looks just like a Google map behind your map data.
 
-```{python}
+```{r}
 # load the ggmap package
 library(ggmap)
 
@@ -180,7 +180,7 @@ nc_bbox <- nc_bounds %>%
 nc_bbox # check
 ```
 
-```{python}
+```{r}
 # fix bounding box columns so they match format that is needed for the ggmap::get_map() function
 nc_bbox_fix <- c(left = nc_bbox[[1]], bottom = nc_bbox[[2]], right = nc_bbox[[3]], top = nc_bbox[[4]])
 
@@ -188,7 +188,7 @@ nc_bbox_fix <- c(left = nc_bbox[[1]], bottom = nc_bbox[[2]], right = nc_bbox[[3]
 nc_bbox_fix
 ```
 
-```{python}
+```{r}
 # get basemap
 nc_basemap <- get_map(nc_bbox_fix, maptype = 'terrain-background', source = 'stamen', zoom = 8)
 # this will have a CRS = WGS84
@@ -201,14 +201,14 @@ nc_bounds_geom_wsg84 <- nc_bounds %>%
 st_crs(nc_bounds_geom_wsg84)
 ```
 
-```{python}
+```{r}
 # plot without basemap
 ggplot() +
   geom_sf(data = nc_bounds_geom_wsg84, fill = NA, lwd = 2) +
   theme_bw()
 ```
 
-```{python}
+```{r}
 # plot with basemap
 # windows version?
 ggmap(nc_basemap) +

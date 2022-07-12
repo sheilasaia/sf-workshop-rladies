@@ -3,7 +3,6 @@ title: An R Markdown document converted from "/Users/ssaia/Documents/github/sf-w
 output: html_document
 ---
 
-```{python}
 # Spatial Data Basics with sf in R (Part 3)
 
 This jupyter notebook contains the code and documentation for part 3 of the "Spatial Data Basics with sf in R" workshop with R-Ladies RTP.
@@ -21,9 +20,8 @@ By the end of part 3 of the workshop attendees will be able to:
 Meetup page for Part 3: https://www.meetup.com/rladies-rtp/events/286866014/
 
 To start, load the `tidyverse`, `sf`, and `here` R packages.
-```
 
-```{python}
+```{r}
 # load the libraries
 # add your code here
 library(tidyverse)
