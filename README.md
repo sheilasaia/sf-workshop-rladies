@@ -19,7 +19,7 @@ Meetup page for Part 1: https://www.meetup.com/rladies-rtp/events/285489478/
 
 ### Learning Objectives Part 2
 
-> **Note** If you haven't attened part 1 and plan to attend part 2, please be sure to take some time to review the material in part 1 before joining. We will assume that attendees participating in part 2 are already familiar with the information covered in the part 1.
+> **Note** If you haven't attended part 1 and plan to attend part 2, please be sure to take some time to review the material in part 1 before joining. We will assume that attendees participating in part 2 are already familiar with the information covered in the part 1.
 
 By the end of part 2 of the workshop attendees will be able to:
 
@@ -29,3 +29,13 @@ By the end of part 2 of the workshop attendees will be able to:
 
 
 Meetup page for Part 2: https://www.meetup.com/rladies-rtp/events/286377977/
+
+### Learning Objectives Part 2
+
+> **Note** If you haven't attended part 1 and part 2 and plan to attend part 3, please be sure to take some time to review the material in the repository here before joining. We will assume that attendees participating in part 3 are already familiar with the information covered in the part 1 and part 2.
+
+By the end of part 3 of the workshop attendees will be able to:
+
+4. **apply** sf and tidyverse operations to wrangle and map real-world spatial data
+
+Meetup page for Part 3: https://www.meetup.com/rladies-rtp/events/286866014/
