@@ -17,7 +17,7 @@ By the end of part 1 of the workshop attendees will be able to:
 Meetup page for Part 1: https://www.meetup.com/rladies-rtp/events/285489478/
 
 
-### Learning Objectives Part 3
+### Learning Objectives Part 2
 
 > **Note** If you haven't attended part 1 and plan to attend part 2, please be sure to take some time to review the material in part 1 before joining. We will assume that attendees participating in part 2 are already familiar with the information covered in the part 1.
 
@@ -30,7 +30,7 @@ By the end of part 2 of the workshop attendees will be able to:
 
 Meetup page for Part 2: https://www.meetup.com/rladies-rtp/events/286377977/
 
-### Learning Objectives Part 2
+### Learning Objectives Part 3
 
 > **Note** If you haven't attended part 1 and part 2 and plan to attend part 3, please be sure to take some time to review the material in the repository here before joining. We will assume that attendees participating in part 3 are already familiar with the information covered in the part 1 and part 2.
 
