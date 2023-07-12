@@ -1,0 +1,228 @@
+---
+title: An R Markdown document converted from "/Users/ssaia/Documents/github/sf-workshop-rladies/workshop_part2_student.ipynb"
+output: html_document
+---
+
+# Spatial Data Basics with sf in R (Part 2)
+
+This jupyter notebook contains the code and documentation for part 2 of the "Spatial Data Basics with sf in R" workshop with R-Ladies RTP.
+
+All of the code that was used to create this tutorial can be found on GitHub here: https://github.com/sheilasaia/sf-workshop-rladies. Please contact Sheila Saia via Meetup or in the Zoom chat during the workshop, if you have any questions.
+
+Special thanks to Dallas Hoffman for all their feedback and help with running this multi-part workshop!
+
+## Learning Outcomes
+
+By the end of part 2 of the workshop attendees will be able to:
+
+1. **explain** different types of spatial operations using the sf package in R
+2. **apply** sf and tidyverse operations to wrangle and map real-world spatial data
+
+Meetup page for Part 2: https://www.meetup.com/rladies-rtp/events/286377977/
+
+To prepare for this workshop load the `tidyverse`, `sf`, and `here` R packages.
+
+```{r}
+# load the libraries
+# add your code here
+library(tidyverse)
+library(here)
+library(sf)
+```
+
+## Converting Tabular Data to Spatial Data
+
+Before we take a look at some spatial operations, let's take a tabular (i.e., .csv) dataset that has latitude and longitude decimal values and convert it to a spatial dataset.
+
+Check out the [U.S. Geological Survey GAGESII dataset](https://water.usgs.gov/GIS/metadata/usgswrd/XML/gagesII_Sept2011.xml) of streamgages located in North Carolina that's available in the data > streamgages > nc_gages.csv file.
+
+```{r}
+# first load in the data
+nc_gages <- read_csv(here::here("data", "streamgages", "nc_gages.csv"), col_names = TRUE)
+```
+
+```{r}
+# look at the first few lines
+head(nc_gages)
+
+# the LAT_GAGE and LNG_GAGE columns are the latitude and longitude columns, respectively
+```
+
+```{r}
+# check the class
+class(nc_gages)
+```
+
+Now we can take this tabular data and convert it to a spatial dataset using the `st_as_sf()` function where we define the `coords` argument using the latitude and longitude column names. This will tell R that we want those columns to represent those values in space.
+
+```{r}
+# convert tabular to spatial data
+nc_gages_spatial <- st_as_sf(nc_gages, coords = c("LNG_GAGE", "LAT_GAGE"), crs = 4326, dim = "XY") %>%
+  st_transform(crs = 5070)
+
+# crs = 4326 because this is the standard EPSG code for the WGS 1984 geographic coordinate system that represents simple lat and long values, then transform to crs = 5070 to work with our other data
+```
+
+```{r}
+# check the class
+class(nc_gages_spatial)
+```
+
+## Coding: Mapping the New Dataset 
+
+Try to do the following:
+
+1. Load in the nc_bounds dataset again from part 1.
+2. Plot the nc_bounds dataset on the bottom and the nc_gages_spatial dataset on the top using `geom_sf()`.
+
+```{r}
+# load in nc_bounds dataset
+# add your code here
+
+# plot nc bounds and gages data on the map
+# fill in the ... below with the correct datasets
+ggplot() +
+  geom_sf(data = ..., fill = NA) +
+  geom_sf(data = ...., color = "blue")
+
+ggsave(here::here("outputs", "nc_gages_map.png"), device = "png", dpi = 50)
+```
+
+## Spatial Operations
+
+Common Spatial (Geometric/Geometry) "Operations"
+
+Some common sf spatial operation commands might include (in no special order):
+
+1. st_transform() - We've seen this before. Projects from one CRS to another.
+2. st_area() - Calculates the area of a polygon.
+3. st_centroid() - Finds the centroid (x-y coordinate) of a polygon or combined geometry.
+4. st_difference() - Removes overlapping spatial data between two datasets.
+5. st_intersection() - Finds overlapping spatial data between two datasets where output is an sf object that's clipped to the boundary of the intersected dataset.
+6. st_simplify() - Makes a simpler version of a geometry based on a given tolerance. This helps reduce file size and speed up visualization loading.
+7. st_snap() - Snaps points or nodes to a second spatial dataset.
+8. st_buffer() - Creates a polygon extending from a geometry within a given distance.
+9. st_boundary() - Finds a polygon that encompasses the full extent of the geometry.
+10. st_crop() - Makes a geometry that intersects a specified rectangle, where the rectangle can be the greatest rectangular boundary of the dataset provided
+11. so many others...
+
+I'm distinguishing these from Spatial (Geometric) "Confirmations" which are similar operations but the output is a list object rather than a sf object. For example, st_intersects() and st_within(). See the sf cheatsheet for more information on this.
+
+Also, sometimes the differences between these operations can be confusing/not obvious so what I tend to do is try them out and then plot the result to make sure it's doing what I think it's doing. If it's not, then you can trouble-shoot from there.
+
+## Coding: Trying Out Some Spatial Operations
+
+So one of the most common spatial operations that you will use is a spatial join, otherwise known as an intersection in sf terminology. If you're interested in knowing where two datasets overlap in space, you can use this.
+
+Let's try a spatial join out with two datasets: (1) the `nc_gages_spatial` dataset and (2) a spatial dataset with the median household income per county from the U.S. Census Bureau called `nc_county_income`
+
+Try to do the following: 
+
+1. Load in the `nc_county_income` dataset in data > nc_county_income > nc_county_income.shp and check the CRS.
+2. Look at the columns of this dataset as well as the columns of the `nc_gages_spatial dataset`.
+3. Use `st_intersection()` to join the two datasets together and assign it to `nc_gages_income_join`.
+4. Map these data using `nc_bounds` and `nc_gages_income_join` and color the points by median household income. Do you see any interesting patterns?
+
+```{r}
+# load in county income data
+# add your code here
+
+# ok CRS = 5070 so it's compatible with all of our other data and we don't need to transform. yay!
+```
+
+```{r}
+# look at the columns
+# add your code here
+```
+
+```{r}
+# do a spatial join with the gages and county income data
+# add your code here
+```
+
+```{r}
+# map the data
+# fill in the ... below with the correct datasets
+ggplot() +
+  geom_sf(data = ..., fill = NA) +
+  geom_sf(data = ..., aes(color = est))
+
+ggsave(here::here("outputs", "nc_gages_income_map.png"), device = "png", dpi = 50)
+```
+
+## Spatial Operations Practice
+
+Try out some of the other spatial operations. Here are some ideas:
+
+1. What is the area of each county?
+2. Create a map of the number of gages per county (and plot the number of gauges vs median county income).
+3. Buffer each gage by 5 km and map the result.
+4. Find the minimum area that contains all the gages. What fraction of the total area of NC is this?
+5. Find the centroid of each county and map the result along with the county bounds.
+
+## Other Helpful sf Commands
+
+If you have a spatial dataset and you want to just keep the attribute data, that is, the data that is not spatially oriented, you can use `st_drop_geometry()` and you will just be left with the dataframe. If you only want to keep the geometry and want to drop all the attribute data you can use `st_geometry()`.
+
+## If Time Allows - Adding a Basemap
+
+A basemap provides spatial context for your map by adding a raster data image behind it. This image looks just like a Google map behind your map data.
+
+```{r}
+# load the ggmap package
+library(ggmap)
+
+# get data bounding box
+nc_bbox <- nc_bounds %>%
+  st_buffer(dist = 150000) %>% # this value is very arbitrary just wanting to make a large buffer around geometry
+  st_transform(4326) %>% # WGS84 (for lat and long)
+  st_bbox()
+nc_bbox # check
+```
+
+```{r}
+# fix bounding box columns so they match format that is needed for the ggmap::get_map() function
+nc_bbox_fix <- c(left = nc_bbox[[1]], bottom = nc_bbox[[2]], right = nc_bbox[[3]], top = nc_bbox[[4]])
+
+# check result
+nc_bbox_fix
+```
+
+```{r}
+# get basemap
+nc_basemap <- get_map(nc_bbox_fix, maptype = 'terrain-background', source = 'stamen', zoom = 8)
+# this will have a CRS = WGS84
+
+# convert nc_state_bounds_geom to WGS84 so it matches nc_basemap
+nc_bounds_geom_wsg84 <- nc_bounds %>%
+  st_transform(4326)
+
+# check
+st_crs(nc_bounds_geom_wsg84)
+```
+
+```{r}
+# plot without basemap
+ggplot() +
+  geom_sf(data = nc_bounds_geom_wsg84, fill = NA, lwd = 2) +
+  theme_bw()
+```
+
+```{r}
+# plot with basemap
+# windows version?
+ggmap(nc_basemap) +
+  geom_sf(data = nc_bounds_geom_wsg84, fill = NA, lwd = 1, inherit.aes = FALSE)
+```
+
+## Wrap Up and Questions
+
+I hope you are now able to:
+
+1. **explain** different types of spatial operations using the sf package in R
+2. **apply** sf and tidyverse operations to wrangle and map real-world spatial data
+
+### Questions
+
+Please feel free to ask any questions you have about this material before we finish for the evening.
+
